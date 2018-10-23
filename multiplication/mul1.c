@@ -14,7 +14,8 @@ void main(){
 	scanf("%s",n);
 	
 	char* mul=multiplication(m,n);
-	printf("result=  %s\n",result);
+	printf("mul=  %s\n",mul);
+	free(mul);
 }
 
 char* multiplication(char* a,char* b){
@@ -61,6 +62,7 @@ char* multiplication(char* a,char* b){
 
 
     /**********************************/
+	cb=0;
 	for(i=min-2;i>=0;i--){
 		t=min-1-i;
 		for(j=max-1;j>=0;j--){
@@ -79,18 +81,16 @@ char* multiplication(char* a,char* b){
 			printf("result_2[j]= %d ",result_2[j]);//
 		printf("\n");
 
-		int cb1=0;
-		 t=0;
+	    cb=0;
 		for(j=0;j<length;j++){
-			ww=result[j]+result_2[j]+cb1;
+			ww=result[j]+result_2[j]+cb;
 			result[j]=ww%10;
-			cb1=ww/10;
-			//t++;
-			//printf("r[j]=%d ",result[j]);//right;
+			cb=ww/10;
 		}
+		printf("\n");
 
-		if(cb1!=0){
-			result[j]=cb1;
+		if(cb!=0){
+			result[j]=cb;
 			printf("r[t]=%d \n",result[j]);
 		}
 		for(j=0;j<length;j++){
@@ -102,13 +102,12 @@ char* multiplication(char* a,char* b){
 	char* mul = (char*)malloc(length);
 	memset(mul,'0',length);
 for(j=length-1;j>=0;j--){
-	if(result[j]==0){
-		j=j-1;
-	}
-	mul[t]=result[j];
+
+	mul[t]=result[j]+'0';
 	t++;
-	printf(" result= %d ",mul[t]);
+	printf(" mul= %c ",mul[t]);
 }
 free(result_2);
+free(result);
 return mul;
 }
