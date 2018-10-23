@@ -102,11 +102,14 @@ char* multiplication(char* a,char* b){
 	char* mul = (char*)malloc(length);
 	memset(mul,'0',length);
 for(j=length-1;j>=0;j--){
-
+    if(result[j]==0){
+    	continue;
+    }
 	mul[t]=result[j]+'0';
-	t++;
 	printf(" mul= %c ",mul[t]);
+	t++;
 }
+mul[t]='\0';
 free(result_2);
 free(result);
 return mul;
