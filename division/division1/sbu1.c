@@ -4,6 +4,7 @@
 
 
 
+
 void main(){
 	char m[MAXMINE];
 	char n[MAXMINE];
