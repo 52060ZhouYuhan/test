@@ -1,10 +1,9 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include  "sbu1.h" 
 
 #define MAXMINE 100
 
-char* subtraction(char* m,char* n);
+
+
 void main(){
 	char m[MAXMINE];
 	char n[MAXMINE];
@@ -35,7 +34,7 @@ char* subtraction(char* subtractor,char* minuend){
 		temp_long=subtractor;
 		temp_short=minuend;	
 		index=0;
-		index_1=0;
+		index_1=0;//show that the result is positive: + ;
 		printf("the result is positive: +\n");
 	}else if(subtractor_length<minuend_length){
 		max=minuend_length;
@@ -43,19 +42,19 @@ char* subtraction(char* subtractor,char* minuend){
 		temp_long=minuend;	
 		temp_short=subtractor;
 		index=1;
-		index_1=1;
+		index_1=1;//show that the result is negative: - ;
 		printf("the result is negative: -\n");
-	}else if(subtractor_length=minuend_length){
+	}else if(subtractor_length==minuend_length){
 		max=subtractor_length;
 		min=minuend_length;
 		temp_long=subtractor;
 		temp_short=minuend;	
 		index=2;
 	}
-	char* result_1=(char*)malloc(max);//long
+	char* result_1=(char*)malloc(max+1);//long
 	memset(result_1,'0',max);
 	result_1[max]='\0';
-	char* result_2=(char*)malloc(max);//short
+	char* result_2=(char*)malloc(max+1);//short
 	memset(result_2,'0',max);
 	result_2[max]='\0';
 	char* result_3=(char*)malloc(max+2);//result
@@ -64,25 +63,92 @@ char* subtraction(char* subtractor,char* minuend){
 	printf("result_3= %s\n",result_3);
 	
 	
-	int i;
+	int i,tt=0,ww1;
 	if(index==2){
 		for(i=0;i<max;i++){
-			if(temp_long[i]>=temp_short[i]){
-				result_1[i]=temp_long[i];
-				result_2[i]=temp_short[i];
+			if(temp_long[i]<temp_short[i]){
+				tt++;
+			}
+			if(tt==0){
 				index_1=0;
 			}else{
-				result_1[i]=temp_short[i];
-				result_2[i]=temp_long[i];
 				index_1=1;
 			}
-		}	
+		}
+		/*************************/
+		for(i=0;i<max;i++){
+			if(temp_long[i]>temp_short[i]){
+				ww1=0;//show that temp_long>temp_short
+				continue;
+			}else if(temp_long[i]<temp_short[i]){
+				ww1=1;//show that temp_long<temp_short
+				break;
+			}			
+		}
+		/*************************/
+		if(ww1==1){//exchenge
+			for(i=0;i<max;i++){
+				result_1[i]=temp_short[i];
+				result_2[i]=temp_long[i];
+			}
+		}else{// no exchenge
+			for(i=0;i<max;i++){
+				result_1[i]=temp_long[i];
+				result_2[i]=temp_short[i];
+			}
+		}
+		printf(" temp_long=%s\n temp_short=%s\n  ",temp_long,temp_short);
+		printf("index_1= %d\n",index_1);
 	}else{
 		for(i=0;i<max;i++){
 			result_1[i]=temp_long[i];
 			result_2[i+max-min]=temp_short[i];
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	int i,tt=0;
+//	if(index==2){
+//		for(i=0;i<max;i++){
+//			if(temp_long[i]<temp_short[i]){
+//				tt++
+//			}
+//			if(tt==0){
+//				index_1=0;
+//			}else{
+//				index_1=1;
+//			}
+//		}
+//		for(i=0;i<max;i++){
+//			if(temp_long[i]>=temp_short[i]){
+//				result_1[i]=temp_long[i];
+//				result_2[i]=temp_short[i];
+//			//	index_1=0;
+//			}else{
+//				result_1[i]=temp_short[i];
+//				result_2[i]=temp_long[i];
+//			//	index_1=1;
+//			}
+//		}
+//		printf("index_1= %d\n",index_1);
+//		
+//		
+//		
+//	}else{
+//		for(i=0;i<max;i++){
+//			result_1[i]=temp_long[i];
+//			result_2[i+max-min]=temp_short[i];
+//		}
+//	}
 	printf("result_1= %s\n",result_1);
 	printf("result_2= %s\n",result_2);
 
@@ -107,11 +173,37 @@ char* subtraction(char* subtractor,char* minuend){
 		}
 		printf("result_3= %c",result_3[i+1]);
 	}
+	printf("\n");
+	int result_3_length=strlen(result_3);
 	if(index_1==1){
 		result_3[0]='-';
+		int sign=0;
+		int sign_1=1;
+		int ii;
+		for(ii=1;ii<result_3_length+1;ii++){
+			if(sign== 0&&result_3[ii] =='0'){
+				continue;
+			}else{
+				result_3[sign_1]=result_3[ii];
+				sign=1;
+				sign_1++;
+			}
+		}		
 		printf("the result is negative: - ");
 	}
 	else if(index_1==0){
+		int sign=0;
+	    int sign_1=0;
+		int ii;
+		for(ii=0;ii<result_3_length+1;ii++){
+			if(sign==0&&result_3[ii]=='0'){
+				continue;
+			}else{
+				result_3[sign_1]=result_3[ii];
+				sign=1;
+				sign_1++;
+			}
+		}	
 		printf("the result is positive: + ");
 	}
 	free(result_1);
