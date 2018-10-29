@@ -16,7 +16,8 @@ void main(){
 		scanf("%s",m);
 		printf("b =  \n");
 		scanf("%s",n);
-	
+		
+		printf("multiplication = %s\n", multiplication(m,n));
 		printf("subtraction = %s\n", subtraction(m,n));
 		char* result = division(m,n,ACCRURACY);
 		printf("result = %s \n", result);
@@ -30,11 +31,11 @@ char* division(char* a,char* b,int accruracy){ // add zero : accruracy + 1
 	int a_length = strlen(a);
 	int b_length = strlen(b);
 
-	if(b[0] == '0'){
+	if(strcmp("0",b) == 0){
 		printf("error input\n");
 		return NULL;
 	}
-	if(a[0] == '0'){
+	if(strcmp("0",a) == 0){
 		char* result_temp = malloc(2);
 		result_temp[0] = '0';
 		result_temp[1] = '\0';

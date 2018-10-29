@@ -64,9 +64,19 @@ char* multiplication(char* a,char* b){
 	int a_length = strlen(a);
 	int b_length = strlen(b);
 	int length = a_length + b_length;
+
+
+
 	char* result = (char*)malloc(length+1);
 	memset(result,'0',length);
 	result[length] = '\0';
+
+	if((a_length == 1 && a[0] == '0') || (b_length == 1 && b[0] == '0')){
+		result[0] = '0';
+		result[1] = '\0';
+		return result;
+	}
+
 	char* result_2 = (char*)malloc(length+1);
 	memset(result_2,'0',length);
 	result_2[length] = '\0';
