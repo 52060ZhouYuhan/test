@@ -14,8 +14,8 @@ typedef struct store{
 	
 }store;
 
-void* init(store* b){
-	memcpy(b->buffer,0,BUFFER_LENGTH);
+void init(store* b){
+	memset(b->buffer,0,BUFFER_LENGTH);//---------modify(memcpy(b->buffer,0,BUFFER_LENGTH);)
 	b->readpos=0;
 	b->writepos=0;
     pthread_mutex_init(&(b->mutex),NULL);
@@ -57,10 +57,11 @@ int get(store* b){
 	}
 	pthread_cond_signal(&(b->notfull));
 	pthread_mutex_unlock(&(b->mutex));
+	return data;//------------add this line;
 }
 /************************************************/
 #define OVER (-1)		//定义结束标志
-store* buffer;	        //定义全局变量
+store buffer;	        //定义全局变量//-----------modify(store* buffer;)
 /************************************************/
 void* producer(void* data){
 	int n=0;
@@ -70,29 +71,42 @@ void* producer(void* data){
 	put(&buffer,OVER);
 	pthread_exit(NULL);
 }
+/**********************************************/
 pthread_mutex_t lock;
 pthread_cond_t exit1;
+int exit_temp = 0;//----------add this line;
 void* consumer(void* data){
 	while(1){
 		int d=get(&buffer);
-		pthread_mutex_lock(&lock);
+		
 		if(d==OVER){
-			
+			printf("enter d == OVER\n");
+			pthread_mutex_lock(&lock);
+			exit_temp = 1;
 			pthread_cond_signal(&exit1);
+			pthread_mutex_unlock(&lock);
 			break;
 		}
-			pthread_mutex_unlock(&lock);
 	}
 	pthread_exit(NULL);
 }
 /************************************************/
 void main(){
+	init(&buffer);
 	pthread_t t_producer;
 	pthread_t t_consumer;
 	pthread_create(&t_producer,NULL,producer,NULL);
 	pthread_create(&t_consumer,NULL,consumer,NULL);
-	pthread_cond_wait(&exit1,&lock);
-	printf("exit!");
+	
+	/***************the following section is very important**************************/
+	pthread_mutex_lock(&lock);
+	while(exit_temp == 0){
+		pthread_cond_wait(&exit1,&lock);
+	}
+	pthread_mutex_unlock(&lock);
+	
+	/********************************************************************************/
+	printf("exit!\n");
 }
 
 
