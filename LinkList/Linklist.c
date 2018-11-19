@@ -4,9 +4,9 @@
 #include <malloc.h>
 
 typedef struct DuLNode{
-	int data;
 	struct DuLNode *prior;
 	struct DuLNode *next;
+	int data;
 }*DuLinkList;
 
 /******************creat Linklist****************************/
@@ -19,14 +19,14 @@ DuLinkList Creat(DuLinkList L,int n){
 	printf("input the inserted data:  \n");
 	for(int i=0;i<n;i++)
 	{
-	scanf("%d",&m);
-	s=(DuLinkList)malloc(sizeof(DuLinkList));
-	s->data=m;	
-	s->next=p->next;
-	s->prior=p;
-	p->next->prior=s;
-	p->next=s; 
-	p=s;
+		scanf("%d",&m);
+		s=(DuLinkList)malloc(sizeof(struct DuLNode));//s=(DuLinkList)malloc(sizeof(DuLinkList));is error
+		s->data=m;	
+		s->next=p->next;
+		s->prior=p;
+		p->next->prior=s;
+		p->next=s; 
+		p=s;
 	}
 	/*******************将链表的头部和尾部连接起来*****************/
 	L->prior=p;
@@ -60,10 +60,11 @@ DuLinkList Getelem(DuLinkList L,int n){
 DuLinkList bubleSort(DuLinkList L,int n);
 //
 void main(){
+	printf("%d,%d,%d\n",sizeof(char*),sizeof(int*),sizeof(struct DuLNode));
 	int m,n;
 	printf("Input the length of LinkList!\n");
 	DuLinkList L,p;
-	L=(DuLinkList)malloc(sizeof(DuLinkList));
+	L=(DuLinkList)malloc(sizeof(struct DuLNode));
 	scanf("%d",&m);
 	L=Creat(L,m);
 	
@@ -89,13 +90,20 @@ void main(){
     }
     printf("\n");
     printf("---------------%d  %d\n",L->prior->data,L->next->data);
-	
+	p=L->next;
+	DuLinkList temp_p;
+    while(p!=L){
+    	p=p->next;
+    	temp_p = p->prior;
+    	free(temp_p);
+    }
+	free(L);
 }
 /**********************bubleSort******************************/
 DuLinkList bubleSort(DuLinkList L,int n){
 	int i,j;
 	DuLinkList p,t,s;
-	s=(DuLinkList)malloc(sizeof(DuLinkList));
+	s=(DuLinkList)malloc(sizeof(struct DuLNode));
 	p=L->next;
 	t=p;
 	for(j=0;j<n-1;j++){
