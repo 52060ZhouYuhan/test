@@ -1,5 +1,5 @@
 #include <stdio.h>
-//#include <stlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
 
@@ -7,7 +7,7 @@ typedef struct DuLNode{
 	int data;
 	struct DuLNode *prior;
 	struct DuLNode *next;
-}DuLNode,*DuLinkList;
+}*DuLinkList;
 
 /******************creat Linklist****************************/
 DuLinkList Creat(DuLinkList L,int n){
@@ -20,7 +20,7 @@ DuLinkList Creat(DuLinkList L,int n){
 	for(int i=0;i<n;i++)
 	{
 	scanf("%d",&m);
-	s=(DuLinkList)malloc(sizeof(DuLNode));
+	s=(DuLinkList)malloc(sizeof(DuLinkList));
 	s->data=m;	
 	s->next=p->next;
 	s->prior=p;
@@ -28,10 +28,14 @@ DuLinkList Creat(DuLinkList L,int n){
 	p->next=s; 
 	p=s;
 	}
+	/*******************将链表的头部和尾部连接起来*****************/
+	L->prior=p;
+	p->next=L;
+	/*********************************************************/
 	return L;
 }
 
-/*******************get the value*******************************/
+/*******************get the value*****************************/
 DuLinkList Getelem(DuLinkList L,int n){
 	DuLinkList p;
 	p=L->next;
@@ -59,7 +63,7 @@ void main(){
 	int m,n;
 	printf("Input the length of LinkList!\n");
 	DuLinkList L,p;
-	L=(DuLinkList)malloc(sizeof(DuLNode));
+	L=(DuLinkList)malloc(sizeof(DuLinkList));
 	scanf("%d",&m);
 	L=Creat(L,m);
 	
@@ -69,42 +73,45 @@ void main(){
     	printf("%d	",p->data);
     	p=p->next;
     }
-	
+    
+    printf("\n------------%d  %d\n",L->prior->data,L->next->data);
     printf("\n Input the location of searching data\n");
     scanf("%d",&n);
 	DuLinkList t,t1;
 	t=Getelem(L,n);
 	printf("The data is:%d\n",t->data);	
 	
-	bubleSort(L,n);
+	bubleSort(L,m);
 	t1=L->next;
     while(t1!=L){
     	printf("%d	",t1->data);
     	t1=t1->next;
     }
     printf("\n");
-	//printf("The data is:%d",t1->data);
+    printf("---------------%d  %d\n",L->prior->data,L->next->data);
+	
 }
-
 /**********************bubleSort******************************/
 DuLinkList bubleSort(DuLinkList L,int n){
 	int i,j;
 	DuLinkList p,t,s;
-	//s=L->next;
+	s=(DuLinkList)malloc(sizeof(DuLinkList));
 	p=L->next;
-	t=p->next;
+	t=p;
 	for(j=0;j<n-1;j++){
 		for(i=0;i<n-j-1;i++){
-			if(p->data>t->data){
+			if((p->data)>(p->next->data)){
 				s->data=p->data;
-				p->data=t->data;
-				t->data=s->data;
+				p->data=p->next->data;
+				p->next->data=s->data;
 			}
 			p=p->next;
-			t=t->next;
 		}
+		p=t;
 	}
+	free(s);
 }
+
 
 
 
