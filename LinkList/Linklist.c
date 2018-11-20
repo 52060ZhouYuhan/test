@@ -10,24 +10,47 @@ typedef struct DuLNode{
 }*DuLinkList;
 
 /******************creat Linklist****************************/
-DuLinkList Creat(DuLinkList L,int n){
+DuLinkList Creat(DuLinkList L){
 	DuLinkList p,s;
 	int m=0;
 	p=L;
 	p->next=L;
 	p->prior=L;
-	printf("input the inserted data:  \n");
-	for(int i=0;i<n;i++)
-	{
-		scanf("%d",&m);
-		s=(DuLinkList)malloc(sizeof(struct DuLNode));//s=(DuLinkList)malloc(sizeof(DuLinkList));is error
-		s->data=m;	
-		s->next=p->next;
+	printf("-----将文件中的数据读入到链表!------\n")
+	FILE *fp=fopen("/home/user/workspace/LinkList/input.txt","r");
+	if(fp==NULL){
+		printf("open error\n");
+		return NULL;
+	} 
+	int x;
+	int length=0;
+	while(!feof(fp)){
+		fscanf(fp,"%d%*[^0123456789]",&x);
+		s=(DuLinkList)malloc(sizeof(struct DuLNode));
+		s->data=x;
+		s->netx=p->next;
 		s->prior=p;
 		p->next->prior=s;
-		p->next=s; 
+		p->next=s;
 		p=s;
+		length++;
+		printf("%d  ",p->data);
 	}
+	rewind(p);
+	printf("length=%d\n",length);
+		
+//	printf("input the inserted data:  \n");
+//	for(int i=0;i<n;i++)
+//	{
+//		scanf("%d",&m);
+//		s=(DuLinkList)malloc(sizeof(struct DuLNode));//s=(DuLinkList)malloc(sizeof(DuLinkList));is error
+//		s->data=m;	
+//		s->next=p->next;
+//		s->prior=p;
+//		p->next->prior=s;
+//		p->next=s; 
+//		p=s;
+//	}
 	/*******************将链表的头部和尾部连接起来*****************/
 	L->prior=p;
 	p->next=L;
@@ -60,13 +83,14 @@ DuLinkList Getelem(DuLinkList L,int n){
 DuLinkList bubleSort(DuLinkList L,int n);
 //
 void main(){
-	printf("%d,%d,%d\n",sizeof(char*),sizeof(int*),sizeof(struct DuLNode));
 	int m,n;
 	printf("Input the length of LinkList!\n");
 	DuLinkList L,p;
 	L=(DuLinkList)malloc(sizeof(struct DuLNode));
-	scanf("%d",&m);
-	L=Creat(L,m);
+	/*************************************************************/
+	
+	/**************************************************************/
+	L=Creat(L);
 	
 	printf("print the data in linklist!\n");
 	p=L->next;
