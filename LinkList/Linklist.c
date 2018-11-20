@@ -23,10 +23,18 @@ DuLinkList Creat(DuLinkList L){
 		return NULL;
 	} 
 	int x;
+
 	int length=0;
+	int counter=0;
 	while(!feof(fp)){
-		fscanf(fp,"%d%*[^0123456789]",&x);
-		length++;
+		fscanf(fp,"%d",&x);
+		if(counter == 0){
+			length = x;
+			counter++;
+			continue;
+		}
+		counter = counter + 1;
+
 		s=(DuLinkList)malloc(sizeof(struct DuLNode));
 		s->data=x;
 		s->next=p->next;
@@ -35,6 +43,8 @@ DuLinkList Creat(DuLinkList L){
 		p->next=s;
 		p=s;
 		printf("%d  ",p->data);
+		if(counter == length + 1)
+			break;
 	}
 	rewind(fp);
 	fclose(fp);	
@@ -111,9 +121,19 @@ void main(){
 	printf("--------计算文件中数据长度---------\n");
 	int x;
 	int length=0;
+	int counter = 0;
 	while(!feof(fp)){
-		fscanf(fp,"%d%*[^0123456789]",&x);//?????该行不能缺省，否则无法正确计算文件中的数据长度
-		length++;
+		fscanf(fp,"%d",&x);//该行不能缺省，否则无法正确计算文件中的数据长度,fscanf函数读取了一个数据后，对指针有一个后移的操作，若缺少本行，指针的位置一直没有改变
+		if(counter == 0){
+			length = x;
+			counter++;
+			continue;
+		}
+		counter = counter + 1;
+		
+		printf("x=%d	",x);
+		if(counter == length + 1)
+			break;
 	}
 	
     m=length;
