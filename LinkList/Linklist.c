@@ -16,8 +16,8 @@ DuLinkList Creat(DuLinkList L){
 	p=L;
 	p->next=L;
 	p->prior=L;
-	printf("-----将文件中的数据读入到链表!------\n")
-	FILE *fp=fopen("/home/user/workspace/LinkList/input.txt","r");
+	printf("-----将文件中的数据读入到链表!------\n");
+	FILE *fp=fopen("/home/user/workspace/test/LinkList/input.txt","r");
 	if(fp==NULL){
 		printf("open error\n");
 		return NULL;
@@ -26,19 +26,19 @@ DuLinkList Creat(DuLinkList L){
 	int length=0;
 	while(!feof(fp)){
 		fscanf(fp,"%d%*[^0123456789]",&x);
+		length++;
 		s=(DuLinkList)malloc(sizeof(struct DuLNode));
 		s->data=x;
-		s->netx=p->next;
+		s->next=p->next;
 		s->prior=p;
 		p->next->prior=s;
 		p->next=s;
 		p=s;
-		length++;
 		printf("%d  ",p->data);
 	}
-	rewind(p);
+	rewind(fp);
+	fclose(fp);	
 	printf("length=%d\n",length);
-		
 //	printf("input the inserted data:  \n");
 //	for(int i=0;i<n;i++)
 //	{
@@ -87,9 +87,6 @@ void main(){
 	printf("Input the length of LinkList!\n");
 	DuLinkList L,p;
 	L=(DuLinkList)malloc(sizeof(struct DuLNode));
-	/*************************************************************/
-	
-	/**************************************************************/
 	L=Creat(L);
 	
 	printf("print the data in linklist!\n");
@@ -105,7 +102,25 @@ void main(){
 	DuLinkList t,t1;
 	t=Getelem(L,n);
 	printf("The data is:%d\n",t->data);	
+	/********************************************************/
+
+	FILE *fp=fopen("/home/user/workspace/test/LinkList/input.txt","r");
+	if(fp==NULL){
+		printf("open error\n");
+	} 
+	printf("--------计算文件中数据长度---------\n");
+	int x;
+	int length=0;
+	while(!feof(fp)){
+		fscanf(fp,"%d%*[^0123456789]",&x);//?????该行不能缺省，否则无法正确计算文件中的数据长度
+		length++;
+	}
 	
+    m=length;
+	printf("-----m=%d\n",m);	
+	fclose(fp);
+	
+	/*******************************************************/
 	bubleSort(L,m);
 	t1=L->next;
     while(t1!=L){
