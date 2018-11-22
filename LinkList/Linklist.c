@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 
 typedef struct DuLNode{
 	struct DuLNode *prior;
@@ -48,19 +47,8 @@ DuLinkList Creat(DuLinkList L){
 	}
 	rewind(fp);
 	fclose(fp);	
-	printf("length=%d\n",length);
-//	printf("input the inserted data:  \n");
-//	for(int i=0;i<n;i++)
-//	{
-//		scanf("%d",&m);
-//		s=(DuLinkList)malloc(sizeof(struct DuLNode));//s=(DuLinkList)malloc(sizeof(DuLinkList));is error
-//		s->data=m;	
-//		s->next=p->next;
-//		s->prior=p;
-//		p->next->prior=s;
-//		p->next=s; 
-//		p=s;
-//	}
+	printf("\n------length=%d\n",length);
+
 	/*******************将链表的头部和尾部连接起来*****************/
 	L->prior=p;
 	p->next=L;
@@ -91,6 +79,7 @@ DuLinkList Getelem(DuLinkList L,int n){
 }
 //
 DuLinkList bubleSort(DuLinkList L,int n);
+DuLinkList mergesort(DuLinkList arr[],int start,int end);
 //
 void main(){
 	int m,n;
@@ -105,12 +94,12 @@ void main(){
     	printf("%d	",p->data);
     	p=p->next;
     }
-    
+    printf("\n----------显示链表首尾的数据-----------");
     printf("\n------------%d  %d\n",L->prior->data,L->next->data);
     printf("\n Input the location of searching data\n");
     scanf("%d",&n);
 	DuLinkList t,t1;
-	t=Getelem(L,n);
+	t=Getelem(L,n); 
 	printf("The data is:%d\n",t->data);	
 	/********************************************************/
 
@@ -135,50 +124,71 @@ void main(){
 		if(counter == length + 1)
 			break;
 	}
-	
+	printf("\n--------------------------------------------\n");
     m=length;
 	printf("-----m=%d\n",m);	
 	fclose(fp);
-	
 	/*******************************************************/
-	bubleSort(L,m);
+	/***********将链表中数据节点的指针地址存入到一个数组中**********/
+	/*******************************************************/
+	p=L->next;
+	DuLinkList* arr=(DuLinkList*)malloc(m*sizeof(DuLinkList));
+	int i;
+	for(i=0;i<length;i++){
+		arr[i]=p;
+		p=p->next;
+		printf("arr[%d]=%p		",i,arr[i]);
+		printf("arr[%d]->data=%d	\n",i,arr[i]->data);
+	}
+	printf("\n");
+	/*******************************************************/
+	/********************该处要调用排序函数********************/
+	/*******************************************************/
+	mergesort(arr,0,m-1);
+	for(i=0;i<length;i++){
+		printf("arr[%d]->data=%d\n",i,arr[i]->data);
+	}
+    //p=L->next;
+	L->next = arr[0];
+	p = arr[0];
+	for(i=1;i<length;i++){
+		p->next = arr[i];
+    	p=arr[i];
+    	p->prior = arr[i-1];
+    	printf("p=%p	",p);
+	}
+	p->next = arr[0];
+	arr[0]->prior = p;
+	
+//    	bubleSort(L,m);
+	/******************************************************/
+	/******************************************************/
+	printf("\n");
 	t1=L->next;
-    while(t1!=L){
-    	printf("%d	",t1->data);
+    while(t1->next != NULL){
+    	printf("node data = %d	",t1->data);
     	t1=t1->next;
+    	if(t1 == L->next)
+    		break;
     }
+
     printf("\n");
-    printf("---------------%d  %d\n",L->prior->data,L->next->data);
+    printf("\n----------显示链表首尾的数据-----------");
+    printf("\n---------------%d  %d\n",L->prior->data,L->next->data);
 	p=L->next;
 	DuLinkList temp_p;
-    while(p!=L){
-    	p=p->next;
-    	temp_p = p->prior;
-    	free(temp_p);
+    while(p->next != NULL){
+    	temp_p = p->next;
+    	free(p);
+    	p=temp_p;
+    	if(p == L->next){
+    		free(p);
+    		break;
+    	}
     }
 	free(L);
+	
 }
-/**********************bubleSort******************************/
-DuLinkList bubleSort(DuLinkList L,int n){
-	int i,j;
-	DuLinkList p,t,s;
-	s=(DuLinkList)malloc(sizeof(struct DuLNode));
-	p=L->next;
-	t=p;
-	for(j=0;j<n-1;j++){
-		for(i=0;i<n-j-1;i++){
-			if((p->data)>(p->next->data)){
-				s->data=p->data;
-				p->data=p->next->data;
-				p->next->data=s->data;
-			}
-			p=p->next;
-		}
-		p=t;
-	}
-	free(s);
-}
-
 
 
 
