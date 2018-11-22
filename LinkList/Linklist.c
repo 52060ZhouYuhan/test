@@ -7,7 +7,7 @@ typedef struct DuLNode{
 	struct DuLNode *next;
 	int data;
 }*DuLinkList;
-
+/******注意：头指针只能指向所创建链表中的第一个节点的位置，头指针不包含于链表中******/
 /******************creat Linklist****************************/
 DuLinkList Creat(DuLinkList L){
 	DuLinkList p,s;
