@@ -1,15 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-
-
-
-typedef struct DuLNode{
-	struct DuLNode *prior;
-	struct DuLNode *next;
-	int data;
-}*DuLinkList;
-
+/***************************************************************
+ * 
+ ****************针对链表，归并排序之递归排序法***********************
+ *  
+ * ************************************************************/
+#include "DuLNode.h"
 
 /******************将两个有序序列合并为一个有序序列********************/
 DuLinkList combine(struct DuLNode* arr[],int start,int m,int end){

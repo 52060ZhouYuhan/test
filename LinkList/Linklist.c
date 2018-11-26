@@ -1,13 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "DuLNode.h"
 
-typedef struct DuLNode{
-	struct DuLNode *prior;
-	struct DuLNode *next;
-	int data;
-}*DuLinkList;
-/******注意：头指针只能指向所创建链表中的第一个节点的位置，头指针不包含于链表中******/
 /******************creat Linklist****************************/
 DuLinkList Creat(DuLinkList L){
 	DuLinkList p,s;
@@ -80,7 +72,8 @@ DuLinkList Getelem(DuLinkList L,int n){
 //
 DuLinkList bubleSort(DuLinkList L,int n);
 DuLinkList mergesort(DuLinkList arr[],int start,int end);
-//
+DuLinkList merge_sort(struct DuLNode* arr[],int length);
+// 
 void main(){
 	int m,n;
 	printf("Input the length of LinkList!\n");
@@ -144,7 +137,9 @@ void main(){
 	/*******************************************************/
 	/********************该处要调用排序函数********************/
 	/*******************************************************/
-	mergesort(arr,0,m-1);
+//	mergesort(arr,0,m-1);//针对链表，归并排序之递归排序法
+	merge_sort(arr,length);//针对链表，归并排序之迭代排序法
+	printf("********************\n");
 	for(i=0;i<length;i++){
 		printf("arr[%d]->data=%d\n",i,arr[i]->data);
 	}
@@ -160,7 +155,7 @@ void main(){
 	p->next = arr[0];
 	arr[0]->prior = p;
 	
-//    	bubleSort(L,m);
+//    	bubleSort(L,m);//优化后的冒泡排序法
 	/******************************************************/
 	/******************************************************/
 	printf("\n");
